@@ -1,6 +1,4 @@
-import os
 import numpy as np
-from src.utils import load_json, dump_json
 
 
 def sigmoid(arr: list) -> list:

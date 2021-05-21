@@ -5,7 +5,7 @@ import cv2
 
 from random import shuffle
 from src.nn.deep_train_utils import training
-
+from src.dl_stuff.neural_network import model
 
 def serialize_image(image_path: str = None, img: np.ndarray = None, target_dim: tuple = None) -> np.ndarray:
     if not img:
@@ -17,11 +17,11 @@ def serialize_image(image_path: str = None, img: np.ndarray = None, target_dim: 
 
 
 if __name__ == '__main__':
-    cat_train_dir = '/Users/vikashkumar/Documents/ml_workbook/temp/datasets/training_set/training_set/cats/'
-    dog_train_dir = '/Users/vikashkumar/Documents/ml_workbook/temp/datasets/training_set/training_set/dogs/'
+    cat_train_dir = '../../temp/datasets/training_set/training_set/cats/'
+    dog_train_dir = '../../temp/datasets/training_set/training_set/dogs/'
 
-    cat_test_dir = '/Users/vikashkumar/Documents/ml_workbook/temp/datasets/test_set/test_set/cats/'
-    dog_test_dir = '/Users/vikashkumar/Documents/ml_workbook/temp/datasets/test_set/test_set/dogs/'
+    cat_test_dir = '../../temp/datasets/test_set/test_set/cats/'
+    dog_test_dir = '../../temp/datasets/test_set/test_set/dogs/'
 
     train_cats = [(p, np.array([0, 1])) for p in glob.glob(cat_train_dir + "*.jpg")[:1000]]
     train_dogs = [(p, np.array([1, 0])) for p in glob.glob(dog_train_dir + "*.jpg")[:1000]]
@@ -55,10 +55,10 @@ if __name__ == '__main__':
     test_X = np.array(test_X).T
     test_Y = np.array(test_Y).T
 
-    training(train_X, train_Y,
-             layer_dims=[800, 16, 2],
-             layer_activations=['relu', 'relu', 'sigmoid'],
-             output_dir='../../temp/models/',
+    model.fit(train_X, train_Y,
+             num_layers=[400, 32, 8, 2],
+             layer_activations=['relu', 'relu', 'relu', 'sigmoid'],
+             output_path='../../temp/cat_vs_dog/',
              epochs=10000,
-             learning_rate=0.1)
+             learning_rate=0.02)
 

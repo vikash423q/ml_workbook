@@ -10,19 +10,33 @@ from src.dl_stuff.neural_network import model
 
 
 def train():
-    path = '/home/user/Desktop/ml_workbook/temp/datasets/sign/Sign-language-digits-dataset'
+    path = '/home/user/Desktop/ml_workbook/temp/datasets/sign'
 
-    train_X = np.load(os.path.join(path, 'X.npy'))
-    train_Y = np.load(os.path.join(path, 'Y.npy'))
+    train_X = np.load(os.path.join(path, 'train_X.npy'))
+    train_Y = np.load(os.path.join(path, 'train_Y.npy'))
 
     train_X = train_X.reshape((train_X.shape[0], 64 * 64)).T
     train_Y = train_Y.T
-    print(train_X.shape, train_Y.shape)
-    parameters = load_pickle(os.path.join('../../temp/sign_models/', '1621577378.1671953/backup/backup_1500.pkl'))
 
-    model.fit(train_X, train_Y, [128, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=10000, output_path='../../temp/sign_models/', learning_rate=0.01,
-              parameters=parameters)
+    test_X = np.load(os.path.join(path, 'test_X.npy'))
+    test_Y = np.load(os.path.join(path, 'test_Y.npy'))
+
+    test_X = test_X.reshape((test_X.shape[0], 64 * 64)).T
+    test_Y = test_Y.T
+
+    # path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621585293.0288584/backup/backup_4000.pkl'
+    # parameters = load_pickle(path)
+    model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+              epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
+              mini_batch=None, X_test=test_X, Y_test=test_Y, tag='base')
+
+    model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+              epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
+              mini_batch=100, X_test=test_X, Y_test=test_Y, tag='base_mb_100')
+
+    model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+              epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
+              mini_batch=32, X_test=test_X, Y_test=test_Y, tag='base_mb_32')
 
     # training(train_X, train_Y,
     #          layer_dims=[40, 16, 10],
@@ -42,9 +56,9 @@ def test():
     train_Y = test_Y.T
 
     # path = os.path.join('../../temp/sign_models/', '1621577378.1671953/backup/backup_1500.pkl')
-    path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621577858.9408772/final_10000.pkl'
+    path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621589180.7416956/backup/backup_7000.pkl'
     parameters = load_pickle(path)
-    res = model.predict(train_X, train_Y, [128, 16, 10], ['relu', 'relu', 'sigmoid'], parameters)
+    res = model.predict(train_X, train_Y, [128, 32, 10], ['relu', 'relu', 'sigmoid'], parameters)
     print(res)
 
 
@@ -54,12 +68,12 @@ def test_image_file(file):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = np.reshape(img, (1, 64 * 64)).T
 
-    path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621577858.9408772/final_10000.pkl'
+    path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621589180.7416956/backup/backup_7000.pkl'
     parameters = load_pickle(path)
     out, _ = model.forward_propagation(img, parameters, [128, 16, 10], ['relu', 'relu', 'sigmoid'])
     print(out)
     out = np.argmax(out)
-    print(out)
+    return out
 
 
 def input_frame(frame):
@@ -72,7 +86,7 @@ def test_with_front_camera():
     vid = cv2.VideoCapture(0)
 
     st = time.time()
-    path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621577858.9408772/final_10000.pkl'
+    path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621589180.7416956/backup/backup_7000.pkl'
     parameters = load_pickle(path)
 
     while (True):
@@ -88,7 +102,8 @@ def test_with_front_camera():
             st = ct
             out,_ = model.forward_propagation(input_frame(frame), parameters, [128, 16, 10], ['relu', 'relu', 'sigmoid'])
             out = np.argmax(out)
-            print(out+1)
+            map = {4: 1, 7: 3, 5: 8, 9: 5, 6: 4, 1: 0, 3: 6, 2: 7, 8: 2, 0: 9}
+            print(out, map[out])
         # the 'q' button is set as the
         # quitting button you may use any
         # desired button of your choice
@@ -102,5 +117,6 @@ def test_with_front_camera():
 
 
 if __name__ == '__main__':
-    test_image_file('/home/user/Downloads/example_5.jpeg')
+    train()
+    # test()
 

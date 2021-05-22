@@ -26,9 +26,9 @@ def train():
 
     # path = '/home/user/Desktop/ml_workbook/temp/sign_models/1621585293.0288584/backup/backup_4000.pkl'
     # parameters = load_pickle(path)
-    model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
-              mini_batch=None, X_test=test_X, Y_test=test_Y, tag='base')
+    # model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+    #           epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
+    #           mini_batch=None, X_test=test_X, Y_test=test_Y, tag='base')
 
     model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
               epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,

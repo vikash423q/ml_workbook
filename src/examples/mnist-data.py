@@ -10,6 +10,7 @@ train_images, train_labels = mndata.load_training()
 test_images, test_labels = mndata.load_testing()
 print('Loaded')
 
+
 def prepare_data():
     X_train = np.array(train_images) / 255.
     X_test = np.array(test_images) / 255.
@@ -26,13 +27,6 @@ def prepare_data():
     return X_train.T, Y_train.T, X_test.T, Y_test.T
 
 
-def train():
-    X_train, Y_train, X_test, Y_test = prepare_data()
-    model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=10000, output_path='../../temp/mnist', learning_rate=0.01,
-              X_test=X_test, Y_test=Y_test)
-
-
 def test():
     X_train, Y_train, X_test, Y_test = prepare_data()
     path = '/home/user/Desktop/ml_workbook/temp/mnist/1621618265.4642844/final_10000.pkl'
@@ -41,6 +35,26 @@ def test():
     print(res)
 
 
+def train():
+    X_train, Y_train, X_test, Y_test = prepare_data()
+    X_train = X_train[:, :25000]
+    Y_train = Y_train[:, :25000]
+    X_test = X_test[:, :5000]
+    Y_test = Y_test[:, :5000]
+
+    model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+              epochs=5000, output_path='../../temp/mnist', learning_rate=0.01,
+              X_test=X_test, Y_test=Y_test, tag='base')
+
+    model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+              epochs=5000, output_path='../../temp/mnist', learning_rate=0.01,
+              X_test=X_test, Y_test=Y_test, mini_batch=100, tag='base_mn_100')
+
+    model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+              epochs=5000, output_path='../../temp/mnist', learning_rate=0.01,
+              X_test=X_test, Y_test=Y_test, mini_batch=32, tag='base_mn_32')
+
+
 if __name__ == '__main__':
-    test()
+    train()
 

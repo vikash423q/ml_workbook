@@ -147,7 +147,6 @@ def fit(X: np.ndarray, Y: np.ndarray, num_layers: List[int], layer_activations: 
         tag: str = 'train'):
     assert X.shape[1] == Y.shape[1], f"Input data {X.shape} and labeled data {Y.shape} shapes are invalid"
     n_x = X.shape[0]
-    m = Y.shape[1]
 
     print(X.shape, Y.shape)
     X_train, X_valid, Y_train, Y_valid = train_test_split(X.T, Y.T, train_size=0.8, shuffle=True, random_state=21)
@@ -156,6 +155,7 @@ def fit(X: np.ndarray, Y: np.ndarray, num_layers: List[int], layer_activations: 
     X_valid = X_valid.T
     Y_train = Y_train.T
     Y_valid = Y_valid.T
+    m = X_train.shape[1]
     print(f"X train data: {X_train.shape}, X validation data: {X_valid.shape}")
     print(f"Y train data: {Y_train.shape}, Y validation data: {Y_valid.shape}")
 
@@ -174,13 +174,14 @@ def fit(X: np.ndarray, Y: np.ndarray, num_layers: List[int], layer_activations: 
     if mini_batch is None:
         mini_batch = m
 
-    n_batches = int(m / mini_batch)
+    n_batches = math.ceil(m / mini_batch)
+    print(n_batches, m)
     for i in range(epochs):
         epoch = i + 1
 
         for j in range(n_batches):
-            X_batch = X_train[:, j:j + mini_batch]
-            Y_batch = Y_train[:, j:j + mini_batch]
+            X_batch = X_train[:, j*mini_batch:(j+1)*mini_batch]
+            Y_batch = Y_train[:, j*mini_batch:(j+1)*mini_batch]
 
             A, caches = forward_propagation(X_batch, parameters, num_layers, layer_activations, dropout)
 

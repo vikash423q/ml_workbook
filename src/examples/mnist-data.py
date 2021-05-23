@@ -43,16 +43,17 @@ def train():
     Y_test = Y_test[:, :5000]
 
     model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=5000, output_path='../../temp/mnist', learning_rate=0.01,
-              X_test=X_test, Y_test=Y_test, tag='base')
+              epochs=2500, output_path='../../temp/mnist', learning_rate=0.01,
+              X_test=X_test, Y_test=Y_test, dropout=None, optimizer='Adam', tag='full_batch',
+              batch_norm=True)
 
-    model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=5000, output_path='../../temp/mnist', learning_rate=0.01,
-              X_test=X_test, Y_test=Y_test, mini_batch=100, tag='base_mn_100')
-
-    model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=5000, output_path='../../temp/mnist', learning_rate=0.01,
-              X_test=X_test, Y_test=Y_test, mini_batch=32, tag='base_mn_32')
+    # model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+    #           epochs=500, output_path='../../temp/mnist', learning_rate=0.01,
+    #           X_test=X_test, Y_test=Y_test, mini_batch=64, optimizer='momentum', tag='optm')
+    #
+    # model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+    #           epochs=500, output_path='../../temp/mnist', learning_rate=0.01,
+    #           X_test=X_test, Y_test=Y_test, mini_batch=64, optimizer='rms', tag='optm')
 
 
 if __name__ == '__main__':

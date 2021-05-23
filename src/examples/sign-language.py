@@ -30,13 +30,13 @@ def train():
     #           epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
     #           mini_batch=None, X_test=test_X, Y_test=test_Y, tag='base')
 
-    model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
-              mini_batch=100, X_test=test_X, Y_test=test_Y, tag='base_mb_100')
+    # model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
+    #           epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
+    #           mini_batch=100, X_test=test_X, Y_test=test_Y, tag='base_mb_100')
 
     model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=5000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
-              mini_batch=32, X_test=test_X, Y_test=test_Y, tag='base_mb_32')
+              epochs=1000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
+              mini_batch=1, X_test=test_X, Y_test=test_Y, tag='sgd')
 
     # training(train_X, train_Y,
     #          layer_dims=[40, 16, 10],

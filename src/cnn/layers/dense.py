@@ -23,9 +23,15 @@ class Dense(Layer):
     def gradients(self):
         return self._dw, self._db
 
-    def initialize(self, prev_units: int):
-        self._w = np.random.random((self.units, prev_units)) * 0.1
-        self._b = np.zeros((self.units, 1)) * 0.1
+    def initialize(self, prev_units: int, method: str = 'xavier'):
+        self._w = np.random.random((self.units, prev_units))
+        self._b = np.zeros((self.units, 1))
+
+        if method == 'xavier':
+            lower, upper = -1 / np.sqrt(prev_units), 1 / np.sqrt(prev_units)
+            self._w = lower + (upper - lower) * self._w
+        else:
+            self._w *= 0.01
 
     def forward_propagation(self, a_prev: np.ndarray, training: bool = True):
         self._a_prev = np.copy(a_prev)
@@ -35,7 +41,7 @@ class Dense(Layer):
     def backward_propagation(self, dz: np.ndarray):
         m = dz.shape[-1]
         self._dw = np.dot(dz, self._a_prev.T) / m
-        self._db = np.sum(dz) / m
+        self._db = np.sum(dz, axis=1, keepdims=True) / m
         da = np.dot(self._w.T, dz)
         return da
 

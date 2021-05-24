@@ -1,13 +1,10 @@
 import numpy as np
 from mnist import MNIST
 
-from src.cnn.model.sequential import SequentialModel
-from src.cnn.layers.dense import Dense
-from src.cnn.activation.relu import Relu
-from src.cnn.activation.sigmoid import Sigmoid
-from src.cnn.activation.softmax import Softmax
-from src.cnn.optimizers.adam import Adam
-from src.cnn.optimizers.gradient_descent import GD
+from src.cnn.model import SequentialModel
+from src.cnn.layers import Dense
+from src.cnn.activation import Relu, Sigmoid, Softmax
+from src.cnn.optimizers import Adam, RMSProp, GD, Momentum
 
 
 mndata = MNIST('/home/user/Downloads/', gz=True)
@@ -50,10 +47,24 @@ def train():
         Softmax()
     ]
 
-    model = SequentialModel(layers=layers, optimizer=GD(lr=0.01))
 
+    path = '/home/user/Desktop/ml_workbook/temp/cnn/mnist'
+
+    model = SequentialModel(layers=layers, optimizer=GD(lr=0.01))
     model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
-                batch_size=64, epochs=500, verbose=True)
+                batch_size=64, epochs=50, verbose=True, output_path=path)
+
+    model = SequentialModel(layers=layers, optimizer=Momentum(lr=0.01))
+    model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
+                batch_size=64, epochs=50, verbose=True, output_path=path)
+
+    model = SequentialModel(layers=layers, optimizer=RMSProp(lr=0.01))
+    model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
+                batch_size=64, epochs=50, verbose=True, output_path=path)
+
+    model = SequentialModel(layers=layers, optimizer=Adam(lr=0.01))
+    model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
+                batch_size=64, epochs=50, verbose=True, output_path=path)
 
 
 if __name__ == '__main__':

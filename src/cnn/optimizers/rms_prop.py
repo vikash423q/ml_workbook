@@ -11,17 +11,19 @@ class RMSProp(Optimizer):
         self._beta = beta
         self._eps = eps
         self._cache_s = {}
+        self._layers = None
 
     def initialize(self, layers: List[Layer]):
-        for idx, layer in enumerate(layers):
-            if layer.weights is None or layer.gradients is None:
+        self._layers = layers
+        for idx, layer in enumerate(self._layers):
+            if layer.weights is None:
                 continue
             w, b = layer.weights
             self._cache_s[f"w{idx}"] = np.zeros(w.shape)
             self._cache_s[f"b{idx}"] = np.zeros(b.shape)
 
-    def update(self, layers: List[Layer]):
-        for idx, layer in enumerate(layers):
+    def update(self):
+        for idx, layer in enumerate(self._layers):
             if layer.weights is None or layer.gradients is None:
                 continue
             (w, b), (dw, db) = layer.weights, layer.gradients

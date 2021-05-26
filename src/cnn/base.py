@@ -4,6 +4,7 @@ import numpy as np
 
 from src.cnn.error import UnimplementedError
 from src.cnn.utils.plot import plot
+from src.cnn.utils.core import handle_regularization
 
 
 class Layer:
@@ -29,6 +30,9 @@ class Layer:
         raise UnimplementedError()
 
     def set_weights(self, w: np.ndarray, b: np.ndarray):
+        raise UnimplementedError()
+
+    def set_gradients(self, dw: np.ndarray, db: np.ndarray):
         raise UnimplementedError()
 
 
@@ -60,3 +64,11 @@ class Model:
 
     def plot_accuracy(self, path: str = '.', tag: str = 'Acc.'):
         plot([self._train_acc, self._test_acc], x_label='Epoch', y_label='Accuracy', tag=tag, path=path)
+
+
+class Regularization:
+    def __init__(self, lamda: float = 0.01):
+        self._lamda = lamda
+
+    def update_gradients(self, layer: Layer):
+        raise UnimplementedError()

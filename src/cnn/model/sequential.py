@@ -5,15 +5,17 @@ from typing import List
 
 import numpy as np
 
-from src.cnn.base import Model, Layer, Optimizer
+from src.cnn.base import Model, Layer, Optimizer, Regularization
+from src.cnn.optimizers import GD
 from src.cnn.utils.core import dump_pickle, load_pickle
 from src.cnn.utils.metrics import softmax_cross_entropy_loss, softmax_accuracy
 
 
 class SequentialModel(Model):
-    def __init__(self, layers: List[Layer], optimizer: Optimizer):
+    def __init__(self, layers: List[Layer], optimizer: Optimizer = GD(), regularization: Regularization = None):
         self._layers = layers
         self._optimizer = optimizer
+        self._regularization = regularization
         self.epochs = None
         self.batch_size = None
         self.dataset_size = None
@@ -27,7 +29,7 @@ class SequentialModel(Model):
         self.batch_size = 64
 
         self._init_directory(output_path)
-        prev_units, m = x_train.shape
+        m, prev_units = x_train.shape[0], x_train.shape[1:]
         total_batch = math.ceil(m / batch_size)
         self.dataset_size = m
 
@@ -43,15 +45,16 @@ class SequentialModel(Model):
             y_hat = np.zeros(y_train.shape)
 
             for j in range(total_batch):
-                x_batch = x_train[:, j * batch_size:(j + 1) * batch_size]
-                y_batch = y_train[:, j * batch_size:(j + 1) * batch_size]
+                x_batch = x_train[j * batch_size:(j + 1) * batch_size, :]
+                y_batch = y_train[j * batch_size:(j + 1) * batch_size, :]
 
                 y_hat_batch = self._forward(x_batch, training=True)
                 cross_entropy_grad = (y_hat_batch - y_batch) / (y_hat_batch * (1 - y_hat_batch) + eps)
                 self._backward(cross_entropy_grad)
                 self._update()
 
-                y_hat[:, j * batch_size:(j + 1) * batch_size] = y_hat_batch
+                y_hat[j * batch_size:(j + 1) * batch_size, :] = y_hat_batch
+                print(f"Batch: {j+1}", end='\r')
 
             train_loss = softmax_cross_entropy_loss(y_hat, y_train)
             train_acc = softmax_accuracy(y_hat, y_train)
@@ -79,6 +82,8 @@ class SequentialModel(Model):
     def _backward(self, dout: np.ndarray):
         for layer in reversed(self._layers):
             dout = layer.backward_propagation(dout)
+            if self._regularization:
+                self._regularization.update_gradients(layer)
 
     def _update(self):
         self._optimizer.update()
@@ -99,8 +104,10 @@ class SequentialModel(Model):
 
     def _dump_artifacts(self, epoch: int):
         if self.output_path:
-
             tag = f"OP-{self._optimizer.__class__.__name__}-BS-{self.batch_size}-DS-{self.dataset_size}"
+            if self._regularization:
+                tag += f'-RG-{self._regularization.__class__.__name__}'
+
             self.plot_loss(os.path.join(self.output_path, 'loss.png'), tag=tag)
             self.plot_accuracy(os.path.join(self.output_path, 'accuracy.png'), tag=tag)
 

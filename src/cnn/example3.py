@@ -2,9 +2,10 @@ import numpy as np
 from mnist import MNIST
 
 from src.cnn.model import SequentialModel
-from src.cnn.layers import Dense
+from src.cnn.layers import Dense, Conv2D, MaxPool, FlattenLayer, DropoutLayer, BatchNormalization
 from src.cnn.activation import Relu, Sigmoid, Softmax
 from src.cnn.optimizers import Adam, RMSProp, GD, Momentum
+from src.cnn.regularization import L2
 
 
 mndata = MNIST('/home/user/Downloads/', gz=True)
@@ -27,42 +28,47 @@ def prepare_data():
     for i, idx in enumerate(test_labels):
         Y_test[i, idx] = 1
 
-    return X_train, Y_train, X_test, Y_test
+    X_train = X_train.reshape(X_train.shape[0], 28, 28, 1)
+    X_test = X_test.reshape(X_test.shape[0], 28, 28, 1)
 
+    return X_train, Y_train, X_test, Y_test
 
 
 def train():
     X_train, Y_train, X_test, Y_test = prepare_data()
-    X_train = X_train[:25000, :]
-    Y_train = Y_train[:25000, :]
+    X_train = X_train[:10000, :]
+    Y_train = Y_train[:10000, :]
     X_test = X_test[:5000, :]
     Y_test = Y_test[:5000, :]
 
     layers = [
-        Dense(40),
+        Conv2D(filters=5, kernel_shape=(3, 3, 1)),
         Relu(),
-        Dense(16),
+        MaxPool(pool_size=(2, 2)),
+        Conv2D(filters=8, kernel_shape=(3, 3, 5)),
         Relu(),
+        MaxPool(pool_size=(2, 2)),
+        FlattenLayer(),
+        DropoutLayer(),
         Dense(10),
         Softmax()
     ]
-
 
     path = '/home/user/Desktop/ml_workbook/temp/cnn/mnist'
 
     # model = SequentialModel(layers=layers, optimizer=GD(lr=0.01))
     # model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
     #             batch_size=64, epochs=50, verbose=True, output_path=path)
-
-    model = SequentialModel(layers=layers, optimizer=Momentum(lr=0.01))
-    model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
-                batch_size=64, epochs=50, verbose=True, output_path=path)
+    #
+    # model = SequentialModel(layers=layers, optimizer=Momentum(lr=0.01))
+    # model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
+    #             batch_size=64, epochs=50, verbose=True, output_path=path)
     #
     # model = SequentialModel(layers=layers, optimizer=RMSProp(lr=0.01))
     # model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
     #             batch_size=64, epochs=50, verbose=True, output_path=path)
 
-    model = SequentialModel(layers=layers, optimizer=Adam(lr=0.01))
+    model = SequentialModel(layers=layers, optimizer=RMSProp(lr=0.01), regularization=L2())
     model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
                 batch_size=64, epochs=50, verbose=True, output_path=path)
 

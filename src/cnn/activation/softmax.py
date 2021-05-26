@@ -8,8 +8,8 @@ class Softmax(Activation, Layer):
         self._a = None
 
     def forward_propagation(self, a_prev: np.ndarray, training: bool = True):
-        e = np.exp(a_prev-np.max(a_prev, axis=0))
-        a = e / np.sum(e, axis=0, keepdims=True)
+        e = np.exp(a_prev-np.max(a_prev, axis=1, keepdims=True))
+        a = e / np.sum(e, axis=1, keepdims=True)
         self._a = np.copy(a)
         return a
 

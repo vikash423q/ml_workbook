@@ -6,7 +6,7 @@ from src.cnn.base import Optimizer, Layer
 
 
 class RMSProp(Optimizer):
-    def __init__(self, lr: float = 0.01, beta: float = 0.90, eps: float = 1e-8):
+    def __init__(self, lr: float = 0.01, beta: float = 0.90, eps: float = 1e-20):
         self._lr = lr
         self._beta = beta
         self._eps = eps

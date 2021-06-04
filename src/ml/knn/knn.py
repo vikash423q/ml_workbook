@@ -2,7 +2,7 @@ import numpy as np
 
 
 def euclidean_dist(x1, x2):
-    return np.sum(np.sqrt(np.abs(np.square(x1) - np.square(x2))), axis=1)
+    return np.sqrt(np.sum(np.square(x1-x2), axis=1))
 
 
 def mode(x):

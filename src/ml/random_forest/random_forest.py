@@ -22,13 +22,19 @@ class RandomForest:
         self._max_depth = max_depth
         self._decision_trees: List[DecisionTreeClassifier] = []
 
+    @staticmethod
+    def _bootstrap_input_data(x: np.ndarray, y: np.ndarray):
+        bootstrap_indices = np.random.choice(range(x.shape[0]), x.shape[0], replace=True)
+        return x[bootstrap_indices, :], y[bootstrap_indices]
+
     def fit(self, x: np.ndarray, y: np.ndarray):
         for i in range(self._num_trees):
             tree = DecisionTreeClassifier(min_sample_split=self._min_sample,
                                           max_feature_split=self._max_feature,
                                           max_depth=self._max_depth,
                                           method=self._method)
-            tree.fit(x, y)
+            boot_x, boot_y = self._bootstrap_input_data(x, y)
+            tree.fit(boot_x, boot_y)
             self._decision_trees.append(tree)
 
     def predict(self, x: np.ndarray):

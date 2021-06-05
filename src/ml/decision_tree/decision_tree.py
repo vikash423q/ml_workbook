@@ -52,7 +52,7 @@ class DecisionTreeClassifier:
     def _grow_tree(self, x: np.ndarray, y: np.ndarray, depth: int = 0):
         if self.min_sample_split and x.shape[0] <= self.min_sample_split:
             return None
-        if not self.min_sample_split and depth > self.max_depth:
+        if depth > self.max_depth:
             return None
         node = Node()
         node.method = self.method

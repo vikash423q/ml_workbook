@@ -1,3 +1,4 @@
+import random
 from typing import Tuple, List
 
 import numpy as np
@@ -16,17 +17,19 @@ class Node:
 
 
 class DecisionTreeClassifier:
-    def __init__(self):
-        self.root = None
-        self.method = None
+    def __init__(self, max_depth: int = 10, method: str = 'gini',
+                 min_sample_split: int = None,
+                 max_feature_split: int = None):
+        self.root = Node()
+        self.method = method
         self.n_classes = None
         self.n_features = None
-        self.max_depth = None
-        self.num_samples_per_class = None
-
-    def fit(self, x, y, max_depth: int = 10, method: str = 'gini'):
-        self.method = method
         self.max_depth = max_depth
+        self.num_samples_per_class = None
+        self.min_sample_split = min_sample_split
+        self.max_feature_split = max_feature_split
+
+    def fit(self, x, y):
         self.n_classes = len(set(y))
         self.n_features = x.shape[1]
         self.num_samples_per_class = [np.sum(y == _class) for _class in range(self.n_classes)]
@@ -38,16 +41,18 @@ class DecisionTreeClassifier:
 
         for i in range(m):
             node = self.root
-            while node.left:
+            while node:
+                y[i] = node.predicted_class
                 if x[i, node.feature_index] < node.threshold:
                     node = node.left
                 else:
                     node = node.right
-            y[i] = node.predicted_class
         return y
 
     def _grow_tree(self, x: np.ndarray, y: np.ndarray, depth: int = 0):
-        if depth > self.max_depth:
+        if self.min_sample_split and x.shape[0] <= self.min_sample_split:
+            return None
+        if not self.min_sample_split and depth > self.max_depth:
             return None
         node = Node()
         node.method = self.method
@@ -68,24 +73,35 @@ class DecisionTreeClassifier:
         best_score = 0.0 if self.method == 'entropy' else 100
         feature_idx = 0
         threshold = 0
-        for f_idx in range(self.n_features):
+
+        feature_indices = []
+        if self.max_feature_split:
+            while len(feature_indices) < self.max_feature_split:
+                rand_idx = random.sample(range(self.max_feature_split), 1)[0]
+                while rand_idx in feature_indices:
+                    rand_idx = random.sample(range(self.max_feature_split), 1)[0]
+                feature_indices.append(rand_idx)
+        else:
+            feature_indices = range(self.n_features)
+
+        for f_idx in feature_indices:
             sorted_indices = x[:, f_idx].argsort()
             x_sorted = x[sorted_indices]
             y_sorted = y[sorted_indices]
-            for i in range(1, m-1):
+            for i in range(0, m):
                 if self.method == 'gini':
                     score = self._weighted_gini(x_sorted, y_sorted, f_idx, x[i, f_idx])
                     if score <= best_score:
                         best_score = score
                         feature_idx = f_idx
-                        threshold = (x[i, f_idx] + x[i+1, f_idx]) / 2
+                        threshold = x[i, f_idx]
 
                 elif self.method == 'entropy':
                     score = self._inf_gain(x_sorted, y_sorted, f_idx, x[i, f_idx])
                     if score >= best_score:
                         best_score = score
                         feature_idx = f_idx
-                        threshold = (x[i, f_idx] + x[i+1, f_idx]) / 2
+                        threshold = x[i, f_idx]
         return best_score, feature_idx, threshold
 
     def _gini(self, y: np.ndarray) -> float:

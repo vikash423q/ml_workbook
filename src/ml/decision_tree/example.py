@@ -15,14 +15,14 @@ def prep_data():
     y = data['target']
     x = x / np.max(x)
     y = y
-    return train_test_split(x, y, test_size=0.2)
+    return train_test_split(x, y, test_size=0.2, random_state=23)
 
 
 def start():
     x_train, x_test, y_train, y_test = prep_data()
 
-    model = DecisionTreeClassifierScratch()
-    model.fit(x_train, y_train, max_depth=10, method='entropy')
+    model = DecisionTreeClassifierScratch(max_depth=10, max_feature_split=10, method='entropy')
+    model.fit(x_train, y_train)
 
     y_hat = model.predict(x_test)
     acc = (y_hat == y_test).mean()

@@ -1,10 +1,10 @@
 import numpy as np
 from mnist import MNIST
 
-from src.cnn.model import SequentialModel
-from src.cnn.layers import Dense
-from src.cnn.activation import Relu, Sigmoid, Softmax
-from src.cnn.optimizers import Adam, RMSProp, GD, Momentum
+from src.dl.model import SequentialModel
+from src.dl.layers import Dense
+from src.dl.activation import Relu, Sigmoid, Softmax
+from src.dl.optimizers import Adam, RMSProp, GD, Momentum
 
 
 mndata = MNIST('/home/user/Downloads/', gz=True)

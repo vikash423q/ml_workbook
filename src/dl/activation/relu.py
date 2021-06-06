@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.cnn.base import Layer, Activation
+from src.dl.base import Layer, Activation
 
 
 class Relu(Activation, Layer):

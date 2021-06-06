@@ -2,7 +2,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from src.cnn.base import Layer
+from src.dl.base import Layer
 
 
 class MaxPool(Layer):

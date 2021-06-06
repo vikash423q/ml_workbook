@@ -1,4 +1,4 @@
-from src.cnn.base import Regularization, Layer
+from src.dl.base import Regularization, Layer
 
 
 class L2(Regularization):

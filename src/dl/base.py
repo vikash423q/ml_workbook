@@ -2,9 +2,9 @@ from typing import List
 
 import numpy as np
 
-from src.cnn.error import UnimplementedError
-from src.cnn.utils.plot import plot
-from src.cnn.utils.core import handle_regularization
+from src.dl.error import UnimplementedError
+from src.dl.utils.plot import plot
+from src.dl.utils.core import handle_regularization
 
 
 class Layer:

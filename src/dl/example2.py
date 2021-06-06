@@ -4,11 +4,11 @@ import numpy as np
 import cv2
 
 from src.utils import load_pickle
-from src.cnn.model import SequentialModel
-from src.cnn.layers import Dense, BatchNormalization
-from src.cnn.activation import Relu, Sigmoid, Softmax
-from src.cnn.optimizers import GD, Momentum, RMSProp, Adam
-from src.cnn.regularization import L1, L2
+from src.dl.model import SequentialModel
+from src.dl.layers import Dense, BatchNormalization
+from src.dl.activation import Relu, Sigmoid, Softmax
+from src.dl.optimizers import GD, Momentum, RMSProp, Adam
+from src.dl.regularization import L1, L2
 
 
 def train():

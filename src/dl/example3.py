@@ -1,11 +1,11 @@
 import numpy as np
 from mnist import MNIST
 
-from src.cnn.model import SequentialModel
-from src.cnn.layers import Dense, Conv2D, MaxPool, FlattenLayer, DropoutLayer, BatchNormalization
-from src.cnn.activation import Relu, Sigmoid, Softmax
-from src.cnn.optimizers import Adam, RMSProp, GD, Momentum
-from src.cnn.regularization import L2
+from src.dl.model import SequentialModel
+from src.dl.layers import Dense, Conv2D, MaxPool, FlattenLayer, DropoutLayer, BatchNormalization
+from src.dl.activation import Relu, Sigmoid, Softmax
+from src.dl.optimizers import Adam, RMSProp, GD, Momentum
+from src.dl.regularization import L2
 
 
 mndata = MNIST('/home/user/Downloads/', gz=True)
@@ -68,7 +68,7 @@ def train():
     # model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
     #             batch_size=64, epochs=50, verbose=True, output_path=path)
 
-    model = SequentialModel(layers=layers, optimizer=RMSProp(lr=0.01), regularization=L2())
+    model = SequentialModel(layers=layers, optimizer=Momentum(lr=0.01), regularization=L2())
     model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
                 batch_size=64, epochs=50, verbose=True, output_path=path)
 

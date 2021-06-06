@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 
-from src.cnn.base import Optimizer, Layer
+from src.dl.base import Optimizer, Layer
 
 
 class RMSProp(Optimizer):

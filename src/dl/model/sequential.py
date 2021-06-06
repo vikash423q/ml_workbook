@@ -5,10 +5,10 @@ from typing import List
 
 import numpy as np
 
-from src.cnn.base import Model, Layer, Optimizer, Regularization
-from src.cnn.optimizers import GD
-from src.cnn.utils.core import dump_pickle, load_pickle
-from src.cnn.utils.metrics import softmax_cross_entropy_loss, softmax_accuracy
+from src.dl.base import Model, Layer, Optimizer, Regularization
+from src.dl.optimizers import GD
+from src.dl.utils.core import dump_pickle, load_pickle
+from src.dl.utils.metrics import softmax_cross_entropy_loss, softmax_accuracy
 
 
 class SequentialModel(Model):

@@ -6,11 +6,11 @@ import cv2
 from sklearn.model_selection import train_test_split
 from src.utils import load_pickle
 from src.nn.deep_train_utils import training, predict
-from src.dl_stuff.neural_network import model
+from src.scribbles.neural_network import model
 
 
 def train():
-    path = '/home/user/Desktop/ml_workbook/temp/datasets/sign'
+    path = '/temp/datasets/sign'
 
     train_X = np.load(os.path.join(path, 'train_X.npy'))
     train_Y = np.load(os.path.join(path, 'train_Y.npy'))
@@ -35,7 +35,7 @@ def train():
     #           mini_batch=100, X_test=test_X, Y_test=test_Y, tag='base_mb_100')
 
     model.fit(train_X, train_Y, [128, 32, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=1000, output_path='../../temp/sign_models/', learning_rate=0.01, parameters=None,
+              epochs=1000, output_path='../../../temp/sign_models/', learning_rate=0.01, parameters=None,
               mini_batch=1, X_test=test_X, Y_test=test_Y, tag='sgd')
 
     # training(train_X, train_Y,
@@ -47,7 +47,7 @@ def train():
 
 
 def test():
-    path = '/home/user/Desktop/ml_workbook/temp/datasets/sign'
+    path = '/temp/datasets/sign'
 
     test_X = np.load(os.path.join(path, 'test_X.npy'))
     test_Y = np.load(os.path.join(path, 'test_Y.npy'))

@@ -12,8 +12,8 @@ def initialize_parameters(n_x: int, num_layers: List[int], batch_norm: bool = Fa
         params[f"b{i + 1}"] = np.zeros((num_layers[i], 1))
 
         if batch_norm:
-            params[f"G{i + 1}"] = np.random.random((num_layers[i],1))
-            params[f"B{i + 1}"] = np.random.random((num_layers[i],1))
+            params[f"G{i + 1}"] = np.random.random((num_layers[i], 1)) * 0.01
+            params[f"B{i + 1}"] = np.random.random((num_layers[i], 1)) * 0.01
 
         if method == 'xavier':
             lower, upper = -1 * np.sqrt(1 / prev_n), 1 * np.sqrt(1 / prev_n)

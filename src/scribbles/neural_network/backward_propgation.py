@@ -15,9 +15,9 @@ def backward_propagation(A, Y, cache, parameters, num_layers, layer_activations,
     dA = dAL
     for i in range(len(num_layers), 0, -1):
         if batch_norm:
-            dA, dG, dB = batchnorm_backward(dA, cache[f"V{i}"], cache[f"X{i}"], parameters[f"G{i}"])
-            parameters[f"G{i}"] -= np.sum(dG, axis=0) / m
-            parameters[f"B{i}"] -= np.sum(dB, axis=0) / m
+            dA, dG, dB = batchnorm_backward(dA, cache[f"S{i}"], cache[f"X{i}"], cache[f"G{i}"])
+            parameters[f"G{i}"] -= dG * 0.1 / m
+            parameters[f"B{i}"] -= dB * 0.1 / m
 
         if layer_activations[i - 1] == 'sigmoid':
             dZ = dA * cache[f"A{i}"] * (1 - cache[f"A{i}"])
@@ -48,10 +48,10 @@ def backward_propagation(A, Y, cache, parameters, num_layers, layer_activations,
 
 
 def batchnorm_backward(dout, inv_var, x_hat, gamma):
-    _, N = dout.shape
+    N, _ = dout.shape
     dxhat = dout * gamma
 
-    dx = (1. / N) * inv_var * (N * dxhat - np.sum(dxhat, axis=0) - x_hat * np.sum(dxhat * x_hat, axis=0))
-    dbeta = np.sum(dout, axis=0)
-    dgamma = np.sum(x_hat * dout, axis=0)
+    dx = (1. / N) / inv_var * (N * dxhat - np.sum(dxhat, axis=0) - x_hat * np.sum(dxhat * x_hat, axis=0))
+    dbeta = np.sum(dout, axis=1, keepdims=True) / N
+    dgamma = np.sum(x_hat * dout, axis=1, keepdims=True) / N
     return dx, dgamma, dbeta

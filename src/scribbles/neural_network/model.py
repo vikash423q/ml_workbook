@@ -4,15 +4,16 @@ import datetime
 
 from sklearn.model_selection import train_test_split
 
-from src.dl_stuff.neural_network.cost import *
-from src.dl_stuff.neural_network.prediction import *
-from src.dl_stuff.neural_network.initialization import *
-from src.dl_stuff.neural_network.update_parameters import *
-from src.dl_stuff.neural_network.forward_propagation import *
-from src.dl_stuff.neural_network.backward_propgation import *
-from src.dl_stuff.evaluation.draw import plot
+from src.scribbles.neural_network.cost import *
+from src.scribbles.neural_network.prediction import *
+from src.scribbles.neural_network.initialization import *
+from src.scribbles.neural_network.update_parameters import *
+from src.scribbles.neural_network.forward_propagation import *
+from src.scribbles.neural_network.backward_propgation import *
+from src.scribbles.evaluation.draw import plot
 from src.utils import dump_pickle, dump_json
 
+from src.dl.utils.metrics import softmax_cross_entropy_loss
 
 def fit(X: np.ndarray, Y: np.ndarray, num_layers: List[int], layer_activations: List[str], epochs: int,
         output_path: str,
@@ -86,7 +87,7 @@ def fit(X: np.ndarray, Y: np.ndarray, num_layers: List[int], layer_activations: 
                 cost = compute_cost_with_l2_regularization(A, Y_batch, lamda, parameters, num_layers, layer_activations[-1])
             else:
                 cost = compute_cost(A, Y_batch, layer_activations[-1])
-            print(f"Epoch: {epoch} batch : {j + 1} cost : {cost}")
+                cost2 = softmax_cross_entropy_loss(A, Y_batch)
 
             grads = backward_propagation(A, Y_batch, caches, parameters, num_layers, layer_activations,
                                          regularization=regularization, batch_norm=batch_norm)
@@ -102,6 +103,7 @@ def fit(X: np.ndarray, Y: np.ndarray, num_layers: List[int], layer_activations: 
             else:
                 parameters = update_parameters(grads, parameters, num_layers, learning_rate)
 
+        print(f"Epoch: {epoch} cost : {cost} {cost2}")
         meta['train_loss'].append(cost)
         if epoch % 20 == 0:
             end_time = time.time()
@@ -128,9 +130,9 @@ def fit(X: np.ndarray, Y: np.ndarray, num_layers: List[int], layer_activations: 
                 print(f"Test Accuracy: {acc}")
 
             dur = round(float((end_time-start_time)/60), 2)
-            tag_name = f"{tag}_epoch-{epoch}_dp-{dropout}_reg-{regularization}-{lamda}_lr-{learning_rate}_time-{dur}"
+            tag_name = f"{tag} Ep-{epoch} BS-{mini_batch} D-{dropout} RG-{regularization}-{lamda} LR-{learning_rate}_TT-{dur}"
             if optimizer:
-                tag_name += f'_opt-{optimizer}-{betav}' if optimizer != 'rms' else f'_opt-{optimizer}-{betav}-{betas}'
+                tag_name += f' OP-{optimizer}-{betav}' if optimizer != 'rms' else f' OP-{optimizer}-{betav}-{betas}'
 
             loss_data = [(meta['train_loss'], [i+1 for i in range(epoch)]),
                          (meta['test_loss'], meta['epochs'])]

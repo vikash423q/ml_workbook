@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from src.dl_stuff.neural_network.util import sigmoid, relu
+from src.scribbles.neural_network.util import sigmoid, relu
 
 
 def forward_propagation(X, parameters, num_layers, layer_activations, dropout: float = None, batch_norm: bool = False):
@@ -21,12 +21,14 @@ def forward_propagation(X, parameters, num_layers, layer_activations, dropout: f
         if batch_norm:
             u = np.mean(Z)
             var = np.var(Z)
-
-            z_norm = (Z - u) / np.sqrt(var + eps)
+            x_centered = Z - u
+            std = np.sqrt(var + eps)
+            z_norm = x_centered / std
             Z = z_norm * parameters[f"G{i + 1}"] + parameters[f"B{i + 1}"]
-            cache[f"U{i+1}"] = u
-            cache[f"V{i + 1}"] = var
+            cache[f"U{i + 1}"] = u
+            cache[f"S{i + 1}"] = std
             cache[f"X{i + 1}"] = z_norm
+            cache[f"G{i + 1}"] = parameters[f"G{i + 1}"]
 
         if layer_activations[i] == 'sigmoid':
             A_prev = sigmoid(Z)

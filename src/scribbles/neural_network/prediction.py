@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.dl_stuff.neural_network.forward_propagation import forward_propagation
+from src.scribbles.neural_network.forward_propagation import forward_propagation
 
 
 def predict(X, Y, num_layers, layer_activations, parameters):

@@ -1,7 +1,7 @@
 import numpy as np
 from mnist import MNIST
 
-from src.dl_stuff.neural_network import model
+from src.scribbles.neural_network import model
 from src.utils import load_pickle
 
 mndata = MNIST('/home/user/Downloads/', gz=True)
@@ -43,9 +43,9 @@ def train():
     Y_test = Y_test[:, :5000]
 
     model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
-              epochs=2500, output_path='../../temp/mnist', learning_rate=0.01,
-              X_test=X_test, Y_test=Y_test, dropout=None, optimizer='Adam', tag='full_batch',
-              batch_norm=True)
+              epochs=2500, output_path='../../../temp/mnist', learning_rate=0.01,
+              X_test=X_test, Y_test=Y_test, dropout=None, mini_batch=64, optimizer='Adam', tag='Adam',
+              batch_norm=False)
 
     # model.fit(X_train, Y_train, num_layers=[40, 16, 10], layer_activations=['relu', 'relu', 'sigmoid'],
     #           epochs=500, output_path='../../temp/mnist', learning_rate=0.01,

@@ -2,16 +2,55 @@
 <h1 align="center">ML Workbook</h1>
 
 ## Description
-This is my initial footsteps into Machine Learning.
+These are my initial footsteps into Machine Learning.
 I have tried to implement ML/DL algorithms from scratch using numpy, because getting your hands dirty is the best way to learn.
 
+
+## Comparision of optimization Algorithms on MNIST dataset
+[Source code](./src/dl/example.py)
+
+I have compared the performance of a Dense network with different optimizers.
+Models used same test and train datasets. Here are the results.
+​
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/mnist/gd/accuracy.png" alt="Gradient Descent">
+</p>
+
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/mnist/gd/loss.png" alt="Gradient Descent">
+</p>
+​
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/mnist/momentum/accuracy.png" alt="Momentum Optimizer">
+</p>
+
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/mnist/momentum/loss.png" alt="Momentum Optimizer">
+</p>
+
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/rmsprop/accuracy.png" alt="RMSProp Optimizer">
+</p>
+
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/rmsprop/loss.png" alt="RMSProp Optimizer">
+</p>
+
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/adam/accuracy.png" alt="Adam Optimizer">
+
+
+<p align="justify"> 
+    <img width="400" src="./temp/plot/nn/adam/loss.png" alt="Adam Optimizer">
+</p>
 
 ## Comparision of some common ML classification Algorithms 
 [Source code](./src/misc/classifier_comparision.py)
 
-I have tried to compare the performance of some common ML Algorithms on sklearn datesets.
+I have tried to compare the performance of some common ML Algorithms on sklearn datasets.
+I have also compared Sklearn's implementation with my scratch implementation with side by side.
 
-I have also compared my scratch implementation with Sklearn's implementation.
+Models used same test and train datasets. Here are the results.
 ​
 <p align="center"> 
     <img width="500" src="./temp/plot/ml/iris_accuracy.png" alt="iris accuracy">

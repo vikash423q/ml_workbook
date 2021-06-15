@@ -30,11 +30,10 @@ def prepare_data():
     return X_train, Y_train, X_test, Y_test
 
 
-
 def train():
     X_train, Y_train, X_test, Y_test = prepare_data()
-    X_train = X_train[:25000, :]
-    Y_train = Y_train[:25000, :]
+    X_train = X_train[:15000, :]
+    Y_train = Y_train[:15000, :]
     X_test = X_test[:5000, :]
     Y_test = Y_test[:5000, :]
 
@@ -47,20 +46,19 @@ def train():
         Softmax()
     ]
 
+    path = '/home/user/Desktop/ml_workbook/temp/plot/nn/mnist'
 
-    path = '/home/user/Desktop/ml_workbook/temp/cnn/mnist'
-
-    # model = SequentialModel(layers=layers, optimizer=GD(lr=0.01))
-    # model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
-    #             batch_size=64, epochs=50, verbose=True, output_path=path)
+    model = SequentialModel(layers=layers, optimizer=GD(lr=0.01))
+    model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
+                batch_size=64, epochs=50, verbose=True, output_path=path)
 
     model = SequentialModel(layers=layers, optimizer=Momentum(lr=0.01))
     model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
                 batch_size=64, epochs=50, verbose=True, output_path=path)
-    #
-    # model = SequentialModel(layers=layers, optimizer=RMSProp(lr=0.01))
-    # model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
-    #             batch_size=64, epochs=50, verbose=True, output_path=path)
+
+    model = SequentialModel(layers=layers, optimizer=RMSProp(lr=0.01))
+    model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,
+                batch_size=64, epochs=50, verbose=True, output_path=path)
 
     model = SequentialModel(layers=layers, optimizer=Adam(lr=0.01))
     model.train(x_train=X_train, y_train=Y_train, x_test=X_test, y_test=Y_test,

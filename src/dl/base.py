@@ -60,10 +60,12 @@ class Model:
         self._test_acc = []
 
     def plot_loss(self, path: str = '.', tag: str = 'Loss'):
-        plot([self._train_loss, self._test_loss], x_label='Epoch', y_label='Loss', tag=tag, path=path)
+        labels = ['train', 'test']
+        plot([self._train_loss, self._test_loss], labels, x_label='Epoch', y_label='Loss', tag=tag, path=path)
 
     def plot_accuracy(self, path: str = '.', tag: str = 'Acc.'):
-        plot([self._train_acc, self._test_acc], x_label='Epoch', y_label='Accuracy', tag=tag, path=path)
+        labels = ['train', 'test']
+        plot([self._train_acc, self._test_acc], labels, x_label='Epoch', y_label='Accuracy', tag=tag, path=path)
 
 
 class Regularization:

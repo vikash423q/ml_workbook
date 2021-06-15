@@ -59,7 +59,8 @@ class LogisticRegresssion:
             l1_ratio: float = None,
             l1_lamda: float = 0.001,
             l2_lamda: float = 0.001,
-            output_dir: str = None):
+            output_dir: str = None,
+            verbose: bool = True):
         self._lr = lr
         self.l1_lamda = l1_lamda
         self.l2_lamda = l2_lamda
@@ -70,14 +71,14 @@ class LogisticRegresssion:
         m = x_train.shape[0]
         if batch_size is None:
             batch_size = m
-        num_batches = math.ceil(m/batch_size)
+        num_batches = math.ceil(m / batch_size)
 
         for i in range(epochs):
             epoch = i + 1
 
             for j in range(num_batches):
-                x_batch = x_train[j*batch_size:(j+1)*batch_size, :]
-                y_batch = y_train[j*batch_size:(j+1)*batch_size, :]
+                x_batch = x_train[j * batch_size:(j + 1) * batch_size, :]
+                y_batch = y_train[j * batch_size:(j + 1) * batch_size, :]
 
                 y_hat = self.forward_propagation(x_batch)
                 train_loss = self._compute_loss(y_hat, y_batch)
@@ -94,18 +95,19 @@ class LogisticRegresssion:
             test_acc = self.accuracy(y_test_hat, y_test)
             self._test_acc.append(test_acc)
 
-            print(f"Epoch : {epoch}\ttrain loss : {train_loss}\ttest loss: {test_loss}\t"
-                  f"train acc : {train_acc}\ttest acc: {test_acc}")
+            if verbose:
+                print(f"Epoch : {epoch}\ttrain loss : {train_loss}\ttest loss: {test_loss}\t"
+                      f"train acc : {train_acc}\ttest acc: {test_acc}")
 
             if epoch % plot_at == 0 and output_dir:
-                plot([self._train_loss, self._test_loss], x_label='Epoch', y_label='Loss',
+                plot([self._train_loss, self._test_loss],
                      path=os.path.join(wd, 'loss.png'))
-                plot([self._train_acc, self._test_acc], x_label='Epoch', y_label='Accuracy',
+                plot([self._train_acc, self._test_acc],
                      path=os.path.join(wd, 'accuracy.png'))
 
     def update_parameters(self, l1_ratio: float = None):
         if l1_ratio:
-            self._dw += (1-l1_ratio) * self.l2_lamda * np.sum(np.square(self._w)) / 2 + l1_ratio * self.l1_lamda
+            self._dw += (1 - l1_ratio) * self.l2_lamda * np.sum(np.square(self._w)) / 2 + l1_ratio * self.l1_lamda
         self.update_weights(w=self._w - self._lr * self._dw,
                             b=self._b - self._lr * self._db)
 

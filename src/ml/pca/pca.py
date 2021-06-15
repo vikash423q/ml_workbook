@@ -3,6 +3,7 @@ from sklearn.preprocessing import StandardScaler
 
 from matplotlib import pyplot as plt
 
+
 class PCA:
     def __init__(self, n_components: int):
         self._n_components = n_components
@@ -35,7 +36,8 @@ class PCA:
     def plot_variance(self, output_path: str):
         cum_sum = np.cumsum(self._eig_values) / np.sum(self._eig_values)
         plt.plot(range(1, len(self._eig_values)+1, 1), cum_sum)
-        plt.ylabel('Cumulative Sum of Eigen Values')
+        plt.ylabel('Cumulative variance')
         plt.xlabel('No of components')
+        plt.title('Cumulative variance plot to determine no of components')
         plt.savefig(output_path)
         plt.close()

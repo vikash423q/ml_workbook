@@ -20,13 +20,16 @@ def prep_data(normalise: bool = False):
     return x, y, data['target_names']
 
 
-def plot(pc_x, y, output_path, labels):
+def plot(pc_x, y, output_path, labels, title):
     pc1 = pc_x[:, 0]
     pc2 = pc_x[:, 1]
 
-    color_map = {0:'blue', 1:'red', 2: 'green'}
+    color_map = {0: 'blue', 1: 'red', 2: 'green'}
     for i in range(len(labels)):
         plt.scatter(pc1[y == i], pc2[y == i], c=color_map[i], label=labels[i])
+    plt.xlabel('PC1')
+    plt.ylabel('PC2')
+    plt.title(title)
     plt.grid()
     plt.legend()
     plt.savefig(output_path)
@@ -38,8 +41,8 @@ def start():
 
     pca = PCAScratch(n_components=2)
     result = pca.fit(x, y, normalize=True)
-    plot(result, y, '../../../temp/pca/pca_plot_scratch.png', labels)
-    pca.plot_variance('../../../temp/pca/pca_variance_scratch.png')
+    plot(result, y, '../../../temp/plot/pca/pca_plot_scratch.png', labels, title='PCA on iris dataset (Scratch)')
+    pca.plot_variance('../../../temp/plot/pca/pca_variance_scratch.png')
     return result
 
 
@@ -48,7 +51,7 @@ def start_with_sklearn():
 
     pca = PCA(n_components=2)
     result = pca.fit_transform(x, y)
-    plot(result, y, '../../../temp/pca/pca_plot_sklearn.png', labels)
+    plot(result, y, '../../../temp/plot/pca/pca_plot_sklearn.png', labels, title='PCA on iris dataset (Sklearn)')
     return result
 
 

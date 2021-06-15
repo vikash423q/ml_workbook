@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 
 def prep_data():
-    data = load_breast_cancer()
+    data = load_iris()
     feature_names = data['feature_names']
     x = data['data']
     y = data['target']
@@ -17,28 +17,35 @@ def prep_data():
 def start():
     x_train, x_test, y_train, y_test = prep_data()
 
-    model = KMeansCluster(n_cluster=2, max_iter=1000)
+    model = KMeansCluster(n_cluster=3, max_iter=1000)
     y = model.fit(x_train)
-    print(y)
     plt.scatter(x_train[:, 0], x_train[:, 1], c=[y], cmap='rainbow')
-    plt.savefig('./plot_scratch.png')
+    plt.xlabel('feature-2')
+    plt.ylabel('feature-1')
+    plt.title('K-Means clustering on iris dataset(From scratch)')
+    plt.savefig('../../../temp/plot/kmeans/plot_scratch.png')
     plt.clf()
 
     inertia = model.elbow(x_train)
+    plt.xlabel('N-Clusters')
+    plt.ylabel('Inertia (SSE)')
+    plt.title('Elbow plot to evaluate cluster size')
     plt.plot([i for i in range(2, 11)], inertia)
-    plt.savefig('./elbow_scratch.png')
+    plt.savefig('../../../temp/plot/kmeans/elbow.png')
     plt.clf()
+    plt.close()
 
 
 def start_with_sklearn():
     x_train, x_test, y_train, y_test = prep_data()
 
-    model = KMeans(n_clusters=2, max_iter=1000)
+    model = KMeans(n_clusters=3, max_iter=1000)
     y = model.fit_predict(x_train)
-    print(y)
-    dist = model.inertia_
     plt.scatter(x_train[:, 0], x_train[:, 1], c=[y], cmap='rainbow')
-    plt.savefig('./plot.png')
+    plt.xlabel('feature-2')
+    plt.ylabel('feature-1')
+    plt.title('K-Means clustering on iris dataset(From SkLearn)')
+    plt.savefig('../../../temp/plot/kmeans/plot_sklearn.png')
     plt.clf()
 
 

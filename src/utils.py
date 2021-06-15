@@ -23,6 +23,7 @@ def plot(args, x_label: str = None, y_label: str = None, tag: str = None, path: 
     if path:
         plt.savefig(path)
     plt.clf()
+    plt.close()
 
 
 def find_files_with_extension(root_dir: str, extension: str) -> List[str]:

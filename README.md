@@ -35,16 +35,16 @@ Models used same test and train datasets. Here are the results.
         <td><p align="center">RMSProp Loss</p></td>
     </tr>
     <tr>
-        <td><img width="500" src="./temp/plot/nn/rmsprop/accuracy.png" alt="RMSProp Optimizer"></td>
-        <td><img width="500" src="./temp/plot/nn/rmsprop/loss.png" alt="RMSProp Optimizer"></td>
+        <td><img width="500" src="./temp/plot/nn/mnist/rmsprop/accuracy.png" alt="RMSProp Optimizer"></td>
+        <td><img width="500" src="./temp/plot/nn/mnist/rmsprop/loss.png" alt="RMSProp Optimizer"></td>
     </tr>
     <tr>
         <td><p align="center">Adam Accuracy</p></td>
         <td><p align="center">Adam Loss</p></td>
     </tr>
     <tr>
-        <td><img width="500" src="./temp/plot/nn/adam/accuracy.png" alt="Adam Optimizer"></td>
-        <td><img width="500" src="./temp/plot/nn/adam/loss.png" alt="Adam Optimizer"></td>
+        <td><img width="500" src="./temp/plot/nn/mnist/adam/accuracy.png" alt="Adam Optimizer"></td>
+        <td><img width="500" src="./temp/plot/nn/mnist/adam/loss.png" alt="Adam Optimizer"></td>
     </tr>
 </table>
 

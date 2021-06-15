@@ -9,7 +9,7 @@ I have tried to implement ML/DL algorithms from scratch using numpy, because get
 ## Comparision of optimization Algorithms on MNIST dataset
 [Source code](./src/dl/example.py)
 
-I have compared the performance of a Dense network with different optimizers.
+I have compared the performance of a Dense Neural Network with different optimizers.
 Models used same test and train datasets. Here are the results.
 ​
 

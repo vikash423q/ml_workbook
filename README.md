@@ -12,37 +12,26 @@ I have tried to implement ML/DL algorithms from scratch using numpy, because get
 I have compared the performance of a Dense network with different optimizers.
 Models used same test and train datasets. Here are the results.
 ​
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/mnist/gd/accuracy.png" alt="Gradient Descent">
-</p>
 
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/mnist/gd/loss.png" alt="Gradient Descent">
-</p>
-​
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/mnist/momentum/accuracy.png" alt="Momentum Optimizer">
-</p>
+<table>
+    <tr>
+        <td><img width="500" src="./temp/plot/nn/mnist/gd/accuracy.png" alt="Gradient Descent"></td>
+        <td><img width="500" src="./temp/plot/nn/mnist/gd/loss.png" alt="Gradient Descent"></td>
+    </tr>
+    <tr>
+        <td><img width="500" src="./temp/plot/nn/mnist/momentum/accuracy.png" alt="Momentum Optimizer"></td>
+        <td><img width="500" src="./temp/plot/nn/mnist/momentum/loss.png" alt="Momentum Optimizer"></td>
+    </tr>
+    <tr>
+        <td><img width="500" src="./temp/plot/nn/rmsprop/accuracy.png" alt="RMSProp Optimizer"></td>
+        <td><img width="500" src="./temp/plot/nn/rmsprop/loss.png" alt="RMSProp Optimizer"></td>
+    </tr>
+    <tr>
+        <td><img width="500" src="./temp/plot/nn/adam/accuracy.png" alt="Adam Optimizer"></td>
+        <td><img width="500" src="./temp/plot/nn/adam/loss.png" alt="Adam Optimizer"></td>
+    </tr>
+</table>
 
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/mnist/momentum/loss.png" alt="Momentum Optimizer">
-</p>
-
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/rmsprop/accuracy.png" alt="RMSProp Optimizer">
-</p>
-
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/rmsprop/loss.png" alt="RMSProp Optimizer">
-</p>
-
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/adam/accuracy.png" alt="Adam Optimizer">
-
-
-<p align="justify"> 
-    <img width="400" src="./temp/plot/nn/adam/loss.png" alt="Adam Optimizer">
-</p>
 
 ## Comparision of some common ML classification Algorithms 
 [Source code](./src/misc/classifier_comparision.py)

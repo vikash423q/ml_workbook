@@ -14,18 +14,22 @@ Models used same test and train datasets. Here are the results.
 ​
 
 <table>
+    <tr><td><p align="center">Gradient Descent</p></td></tr>
     <tr>
         <td><img width="500" src="./temp/plot/nn/mnist/gd/accuracy.png" alt="Gradient Descent"></td>
         <td><img width="500" src="./temp/plot/nn/mnist/gd/loss.png" alt="Gradient Descent"></td>
     </tr>
+    <tr><td><p align="center">Momentum</p></td></tr>
     <tr>
         <td><img width="500" src="./temp/plot/nn/mnist/momentum/accuracy.png" alt="Momentum Optimizer"></td>
         <td><img width="500" src="./temp/plot/nn/mnist/momentum/loss.png" alt="Momentum Optimizer"></td>
     </tr>
+    <tr><td><p align="center">RMSProp</p></td></tr>
     <tr>
         <td><img width="500" src="./temp/plot/nn/rmsprop/accuracy.png" alt="RMSProp Optimizer"></td>
         <td><img width="500" src="./temp/plot/nn/rmsprop/loss.png" alt="RMSProp Optimizer"></td>
     </tr>
+    <tr><td><p align="center">Adam</p></td></tr>
     <tr>
         <td><img width="500" src="./temp/plot/nn/adam/accuracy.png" alt="Adam Optimizer"></td>
         <td><img width="500" src="./temp/plot/nn/adam/loss.png" alt="Adam Optimizer"></td>

@@ -6,6 +6,14 @@ These are my initial footsteps into Machine Learning.
 I have tried to implement ML/DL algorithms from scratch using numpy, because getting your hands dirty is the best way to learn.
 
 
+## Comparision of optimization Algorithms on saddle point
+[Source code](./src/misc/optimizer_comparision.py)
+<p align="center"> 
+    <img width="600" src="./temp/plot/nn/optimizers/optimizers_comparision.gif" alt="optimizers comparision">
+</p>
+​
+
+
 ## Comparision of optimization Algorithms on MNIST dataset
 [Source code](./src/dl/example.py)
 

@@ -48,8 +48,8 @@ class DummyLayer(Layer):
 
 
 def plot_saddle_plane(ax):
-    X = np.arange(-1, 1, 0.01)
-    Y = np.arange(-1, 1, 0.01)
+    X = np.arange(-1.2, 1.2, 0.01)
+    Y = np.arange(-1.2, 1.2, 0.01)
     X, Y = np.meshgrid(X, Y)
     Z = X ** 2 - Y ** 2
 
@@ -61,7 +61,7 @@ def plot_saddle_plane(ax):
 
 
 def initialize_saddle_point():
-    return np.array([1.001, -0.001])
+    return np.array([1.201, -0.01])
 
 
 def calculate_gradients(w: np.ndarray) -> np.ndarray:
@@ -72,7 +72,7 @@ def calculate_gradients(w: np.ndarray) -> np.ndarray:
 
 
 def run_tracks(lr: float = 0.01, n_iter: int = 100):
-    optimizers = [GD(lr), Momentum(lr), RMSProp(0.03), Adam(0.03)]
+    optimizers = [GD(lr), Momentum(lr), RMSProp(lr), Adam(lr)]
     layers = [DummyLayer() for _ in optimizers]
 
     # initializing all the layers weight
@@ -80,9 +80,11 @@ def run_tracks(lr: float = 0.01, n_iter: int = 100):
     # initializing optimizers with corresponding layers
     [optimizer.initialize([layer]) for optimizer, layer in zip(optimizers, layers)]
 
-    tracks = np.zeros((3, len(optimizers), n_iter))
+    tracks = np.zeros((3, len(optimizers), n_iter + 1))
+    tracks[0:2, :, 0] = np.reshape(initialize_saddle_point(), (2, 1))
+    tracks[2, :, 0] = tracks[0, :, 0] ** 2 - tracks[1, :, 0] ** 2
 
-    for _iter in range(n_iter):
+    for _iter in range(1, n_iter + 1):
         for idx, (optimizer, layer) in enumerate(zip(optimizers, layers)):
             layer.backward_propagation()
             optimizer.update()
@@ -106,36 +108,42 @@ def animate():
 
     ax = plot_saddle_plane(ax)
 
-    tracks = run_tracks(lr=0.05, n_iter=150)
+    tracks = run_tracks(lr=0.06, n_iter=100)
 
     _, n_tracks, iters = tracks.shape
 
     c = ['red', 'orange', 'yellow', 'green']
     labels = ['Gradient Descent', 'Momentum', 'RMSProp', 'Adam']
     lines = [ax.plot(tracks[0, i, 0:1], tracks[1, i, 0:1], tracks[2, i, 0:1],
-                     linewidth=3, c=c[i], label=labels[i],
+                     linewidth=2, c=c[i], label=labels[i],
                      markevery=[-1])[0] for i in range(n_tracks)]
 
-    def update(num, data, lines):
-        speed = 3.2
+    leads = [ax.plot(tracks[0, i, 0:1], tracks[1, i, 0:1], tracks[2, i, 0:1],
+                     marker='o', c=c[i])[0] for i in range(n_tracks)]
+
+    def update(num, data, lines, leads):
+        speed = 1.5
         azim = (num * speed) % 360 - 180
         ax.view_init(elev=45, azim=azim)
         for i, line in enumerate(lines):
             lines[i].set_data(data[0:2, i, :num])
             lines[i].set_3d_properties(data[2, i, :num])
-        return lines
+        for i, sct in enumerate(leads):
+            leads[i].set_data(data[0:2, i, num - 1])
+            leads[i].set_3d_properties(data[2, i, num - 1])
+        return lines, leads
 
     # Setting the axes properties
-    ax.set_xlim3d([-1.0, 1.0])
+    ax.set_xlim3d([-1.2, 1.2])
     ax.set_xlabel('X')
 
-    ax.set_ylim3d([-1.0, 1.0])
+    ax.set_ylim3d([-1.2, 1.2])
     ax.set_ylabel('Y')
 
-    ax.set_zlim3d([-1.0, 1.0])
+    ax.set_zlim3d([-1.2, 1.2])
     ax.set_zlabel('Z')
 
-    ani = animation.FuncAnimation(fig, update, frames=iters, fargs=(tracks, lines), interval=50, blit=False)
+    ani = animation.FuncAnimation(fig, update, frames=iters, fargs=(tracks, lines, leads), interval=50, blit=False)
     plt.legend()
 
     ani.save('../../temp/plot/nn/optimizers/optimizers_comparision.gif', writer='imagemagick')

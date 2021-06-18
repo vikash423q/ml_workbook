@@ -48,6 +48,6 @@ class Adam(Optimizer):
             sw_corrected = self._cache_s[f"w{idx}"] / (1 - self._beta2 ** self._t)
             sb_corrected = self._cache_s[f"b{idx}"] / (1 - self._beta2 ** self._t)
 
-            new_w = w - self._lr * vw_corrected / np.sqrt(sw_corrected + self._eps)
-            new_b = b - self._lr * vb_corrected / np.sqrt(sb_corrected + self._eps)
+            new_w = w - self._lr * vw_corrected / (np.sqrt(sw_corrected) + self._eps)
+            new_b = b - self._lr * vb_corrected / (np.sqrt(sb_corrected) + self._eps)
             layer.set_weights(w=new_w, b=new_b)

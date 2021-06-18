@@ -27,9 +27,18 @@ class Momentum(Optimizer):
                 continue
             (w, b), (dw, db) = layer.weights, layer.gradients
 
-            self._cache[f"w{idx}"] = self._cache[f"w{idx}"] * self._beta + dw * (1 - self._beta)
-            self._cache[f"b{idx}"] = self._cache[f"b{idx}"] * self._beta + db * (1 - self._beta)
+            # old implementation
+            # self._cache[f"w{idx}"] = self._cache[f"w{idx}"] * self._beta + dw * (1 - self._beta)
+            # self._cache[f"b{idx}"] = self._cache[f"b{idx}"] * self._beta + db * (1 - self._beta)
+            #
+            # new_w = w - self._lr * self._cache[f"w{idx}"]
+            # new_b = b - self._lr * self._cache[f"b{idx}"]
+            # layer.set_weights(w=new_w, b=new_b)
 
-            new_w = w - self._lr * self._cache[f"w{idx}"]
-            new_b = b - self._lr * self._cache[f"b{idx}"]
+            # implementation with velocity
+            self._cache[f"w{idx}"] = self._beta * self._cache[f'w{idx}'] - self._lr * dw
+            self._cache[f"b{idx}"] = self._beta * self._cache[f'b{idx}'] - self._lr * db
+
+            new_w = w + self._cache[f"w{idx}"]
+            new_b = b + self._cache[f"b{idx}"]
             layer.set_weights(w=new_w, b=new_b)

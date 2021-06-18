@@ -8,10 +8,17 @@ I have tried to implement ML/DL algorithms from scratch using numpy, because get
 
 ## Comparision of optimization Algorithms on saddle point
 [Source code](./src/misc/optimizer_comparision.py)
-<p align="center"> 
-    <img width="600" src="./temp/plot/nn/optimizers/optimizers_comparision.gif" alt="optimizers comparision">
-</p>
-​
+
+<table>
+    <tr>
+        <td><p align="center">Scratch optimizers</p></td>
+        <td><p align="center">Tensorflow optimizers</p></td>
+    </tr>
+    <tr>
+        <td><img width="600" src="./temp/plot/nn/optimizers/optimizers_comparision_scratch.gif" alt="Scratch optimizers"></td>
+        <td><img width="600" src="./temp/plot/nn/optimizers/optimizers_comparision_tf.gif" alt="Tensorflow optimizers"></td>
+    </tr>
+</table>
 
 
 ## Comparision of optimization Algorithms on MNIST dataset
